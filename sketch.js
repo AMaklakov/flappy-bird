@@ -7,7 +7,10 @@ let bird
 /** @type {Pipe[]} */
 let pipes
 let score = 0
-let record = 0
+let record = +localStorage.getItem('record') || 0
+function setRecord(record) {
+  localStorage.setItem('record', record)
+}
 
 let needJump = false
 let isGameOver = false
@@ -80,7 +83,8 @@ function gameover() {
   textAlign(CENTER, CENTER)
   text('Game over', window.WIDTH / 2, window.height / 2)
   textAlign(LEFT, BASELINE)
-  maxScore = Math.max(score, record)
+  record = Math.max(score, record)
+  setRecord(record)
   noLoop()
 }
 //   s.draw = () => {
