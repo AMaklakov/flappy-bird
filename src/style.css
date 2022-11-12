@@ -1,8 +1,33 @@
-#jump {
-  width: 50px;
-  height: 50px;
-  background: red;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  font-size: 16px;
+}
+
+#gameOver {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  background-color: #222222aa;
+  color: white;
+}
+
+button {
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
 }

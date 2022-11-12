@@ -79,78 +79,28 @@ function checkGameOver() {
 }
 
 function gameover() {
-  textSize(50)
-  textAlign(CENTER, CENTER)
-  text('Game over', window.WIDTH / 2, window.height / 2)
-  textAlign(LEFT, BASELINE)
   record = Math.max(score, record)
   setRecord(record)
+  toggleGameOver(true)
   noLoop()
 }
-//   s.draw = () => {
-//     s.background(0)
-//     s.image(bgImg, 0, 0, bgImg.width, s.height) // background
-//
-//
-//     // for (let i = pipes.length - 1; i >= 0; i--) {
-//     //   pipes[i].update()
-//     //   pipes[i].show()
-//     //
-//     //   if (pipes[i].pass(bird)) {
-//     //     score++
-//     //   }
-//     //
-//     //   if (pipes[i].hits(bird)) {
-//     //     gameover()
-//     //   }
-//     //
-//     //   if (pipes[i].offscreen()) {
-//     //     pipes.splice(i, 1)
-//     //   }
-//     // }
-//     //
-//     // bird.update()
-//     // bird.show()
-//     //
-//     // if ((s.frameCount - gameoverFrame) % 150 == 0) {
-//     //   pipes.push(new Pipe())
-//     // }
-//     //
-//     // showScores()
-//
-//     // touched = s.touches.length > 0
-//     //
-//     // if (touched && !prevTouched) {
-//     //   bird.up()
-//     // }
-//     //
-//     // prevTouched = touched
-//   }
-//
-//   //
-//   //
-//   // function reset() {
-//   //   isOver = false
-//   //   score = 0
-//   //   bgX = 0
-//   //   pipes = []
-//   //   bird = new Bird()
-//   //   pipes.push(new Pipe())
-//   //   gameoverFrame = s.frameCount - 1
-//   //   s.loop()
-//   // }
-//   //
-//   // const keyPressed = () => {
-//   //   if (key === ' ') {
-//   //     bird.jump()
-//   //     if (isOver) reset()
-//   //   }
-//   // }
-//   //
-//   // function touchStarted() {
-//   //   if (isOver) reset()
-//   // }
-//
+
+function toggleGameOver(show) {
+  const div = document.querySelector('#gameOver')
+  div.style.display = show ? 'flex' : 'none'
+  div.querySelector('.result').innerHTML = score
+}
+
+function restart() {
+  isGameOver = false
+  score = 0
+  pipes = [new Pipe()]
+  bird = new Bird()
+  gameoverFrame = frameCount - 1
+  toggleGameOver(false)
+  loop()
+}
+
 function loadSprites() {
   window.bgImg = loadImage('./img/bg.png')
   window.birdImg = loadImage('./img/bird.png')

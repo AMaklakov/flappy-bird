@@ -13,7 +13,14 @@
   <body>
     <main></main>
 
-    <div id="jump"></div>
+    <div id="gameOver" style="display: none">
+      <h1>Game over</h1>
+      <span>
+        Your score:
+        <span class="result"></span>
+      </span>
+      <button onclick="restart()">Restart</button>
+    </div>
 
     <script language="javascript" type="text/javascript" src="./node_modules/p5/lib/p5.js"></script>
     <script src="sketch.js" defer></script>
