@@ -1,45 +1,37 @@
-export class Bird {
-  constructor(s) {
-    this.s = s
+const BIRD_SIZE = 30
+const G = 0.2
+const JUMP_V = 5
 
-    this.y = s.height / 2
-    this.x = 64
+class Bird {
+  constructor() {
+    this.y = window.HEIGHT / 2
+    this.x = window.WIDTH / 4
+    this.width = this.height = BIRD_SIZE
+    this.halfSize = BIRD_SIZE / 2
 
-    this.gravity = 0.6
-    this.lift = -10
-    this.velocity = 0
-
-    this.width = 64
-    this.height = 64
+    this.v = 0
   }
 
-  show() {
-    // draw the icon CENTERED around the X and Y coords of the bird object
-    this.s.image(
-      birdImg,
-      this.x - this.width / 2,
-      this.y - this.height / 2,
-      this.width,
-      this.height
-    )
+  draw() {
+    image(birdImg, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
   }
 
-  up() {
-    this.velocity = this.lift
+  jump() {
+    this.v = -JUMP_V
   }
 
   update() {
-    this.velocity += this.gravity
-    this.y += this.velocity
+    this.v += G
+    this.y += this.v
 
-    if (this.y >= this.s.height - this.height / 2) {
-      this.y = this.s.sheight - this.height / 2
-      this.velocity = 0
+    if (this.y >= height - this.halfSize) {
+      this.y = HEIGHT - this.halfSize
+      this.v = 0
     }
 
-    if (this.y <= this.height / 2) {
-      this.y = this.height / 2
-      this.velocity = 0
+    if (this.y <= this.halfSize) {
+      this.y = this.halfSize
+      this.v = 0
     }
   }
 }
