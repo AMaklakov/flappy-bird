@@ -9,9 +9,6 @@ let bird
 let pipes
 let score = 0
 let record = +localStorage.getItem('record') || 0
-function setRecord(record) {
-  localStorage.setItem('record', record)
-}
 
 let needJump = false
 let isGameOver = false
@@ -79,7 +76,7 @@ function checkGameOver() {
 
 function gameover() {
   record = Math.max(score, record)
-  setRecord(record)
+  localStorage.setItem('record', record)
   toggleGameOver(true)
   gameOverFrame = frameCount
   noLoop()
