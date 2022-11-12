@@ -3,11 +3,12 @@ const { WIDTH, HEIGHT } = window
 const MIN_H = HEIGHT * (1 / 6)
 const MAX_H = HEIGHT * (3 / 4)
 
+const SPACING = 100
+
 class Pipe {
   constructor() {
-    this.spacing = 100
     this.top = Math.round(Math.random() * (MAX_H - MIN_H) + MIN_H)
-    this.bottom = this.top + this.spacing
+    this.bottom = this.top + SPACING
 
     this.x = WIDTH
     this.w = 80
@@ -55,7 +56,7 @@ class Pipe {
     push()
     translate(this.x + this.w / 2, this.bottom)
     this.drawHalf()
-    translate(0, -this.spacing)
+    translate(0, -SPACING)
     rotate(PI)
     this.drawHalf()
     pop()
@@ -63,6 +64,7 @@ class Pipe {
 
   update() {
     this.x -= this.speed
+    return this
   }
 
   offscreen = () => this.x < -this.w

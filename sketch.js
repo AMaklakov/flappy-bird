@@ -1,6 +1,7 @@
-window.WIDTH = 288
-window.HEIGHT = 512
-PIPES_TOTAL = 1
+window.WIDTH = window.innerWidth
+window.HEIGHT = window.innerHeight
+const PIPES_TOTAL = 1
+const NEW_PIPE_FRAMES = 150
 
 /** @type {Bird} */
 let bird
@@ -14,6 +15,7 @@ function setRecord(record) {
 
 let needJump = false
 let isGameOver = false
+let gameOverFrame = 0
 
 function setup() {
   createCanvas(WIDTH, HEIGHT)
@@ -28,16 +30,14 @@ function preload() {
 function draw() {
   checkJump()
 
-  clear()
-  image(bgImg, 0, 0, bgImg.width, height) // set bg image
+  // clear()
+  image(bgImg, 0, 0, width, height) // set bg image
 
-  pipes.forEach((pipe, index) => {
-    pipe.update()
-    pipe.draw()
-  })
+  pipes.forEach((pipe) => pipe.update().draw())
   score += pipes.filter((p) => p.isPassedOnce(bird)).length
-  pipes = pipes.filter((pipe) => !pipe.offscreen())
-  pipes = pipes.concat(Array.from({ length: PIPES_TOTAL - pipes.length }).map(() => new Pipe()))
+  if ((frameCount - gameOverFrame) % NEW_PIPE_FRAMES === 0) {
+    pipes.push(new Pipe())
+  }
 
   if (checkGameOver()) {
     gameover()
@@ -82,6 +82,7 @@ function gameover() {
   record = Math.max(score, record)
   setRecord(record)
   toggleGameOver(true)
+  gameOverFrame = frameCount
   noLoop()
 }
 

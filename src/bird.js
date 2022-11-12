@@ -1,6 +1,6 @@
 const BIRD_SIZE = 30
-const G = 0.2
-const JUMP_V = 5
+const G = 0.25
+const JUMP_A = 5
 
 class Bird {
   constructor() {
@@ -17,7 +17,11 @@ class Bird {
   }
 
   jump() {
-    this.v = -JUMP_V
+    if (this.v < 0) {
+      this.v -= JUMP_A / 1.4
+    } else {
+      this.v = -JUMP_A
+    }
   }
 
   update() {
