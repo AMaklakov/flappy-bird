@@ -10,6 +10,7 @@ let score = 0
 let record = 0
 
 let needJump = false
+let isGameOver = false
 
 function setup() {
   createCanvas(WIDTH, HEIGHT)
@@ -30,13 +31,14 @@ function draw() {
   pipes.forEach((pipe, index) => {
     pipe.update()
     pipe.draw()
-
-    if (pipe.isPassedOnce(bird)) {
-      score += 1
-    }
   })
+  score += pipes.filter((p) => p.isPassedOnce(bird)).length
   pipes = pipes.filter((pipe) => !pipe.offscreen())
   pipes = pipes.concat(Array.from({ length: PIPES_TOTAL - pipes.length }).map(() => new Pipe()))
+
+  if (checkGameOver()) {
+    gameover()
+  }
 
   // jump
   if (needJump) {
@@ -68,6 +70,19 @@ function showScore() {
   text(`Record: ${record}`, 1, 64)
 }
 
+function checkGameOver() {
+  const isHit = pipes.some((p) => p.hits(bird))
+  return isHit || bird.touchesSky() || bird.touchesGround()
+}
+
+function gameover() {
+  textSize(50)
+  textAlign(CENTER, CENTER)
+  text('Game over', window.WIDTH / 2, window.height / 2)
+  textAlign(LEFT, BASELINE)
+  maxScore = Math.max(score, record)
+  noLoop()
+}
 //   s.draw = () => {
 //     s.background(0)
 //     s.image(bgImg, 0, 0, bgImg.width, s.height) // background
@@ -109,15 +124,6 @@ function showScore() {
 //   }
 //
 //   //
-//   // function gameover() {
-//   //   s.textSize(64)
-//   //     .textAlign(CENTER, CENTER)
-//   //     .text('GAMEOVER', s.width / 2, s.height / 2)
-//   //     .textAlign(LEFT, BASELINE)
-//   //   maxScore = s.max(score, maxScore)
-//   //   isOver = true
-//   //   s.noLoop()
-//   // }
 //   //
 //   // function reset() {
 //   //   isOver = false

@@ -34,4 +34,7 @@ class Bird {
       this.v = 0
     }
   }
+
+  touchesSky = () => this.y - this.halfSize <= 0
+  touchesGround = () => this.y + this.halfSize >= window.HEIGHT
 }
