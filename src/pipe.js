@@ -1,12 +1,15 @@
-class Pipe {
-  constructor(s) {
-    this.s = s
+const { WIDTH, HEIGHT } = window
 
-    this.spacing = 125
-    this.top = this.s.random(this.s.height / 6, (3 / 4) * this.s.height)
+const MIN_H = HEIGHT * (1 / 6)
+const MAX_H = HEIGHT * (3 / 4)
+
+class Pipe {
+  constructor() {
+    this.spacing = 100
+    this.top = Math.round(Math.random() * (MAX_H - MIN_H) + MIN_H)
     this.bottom = this.top + this.spacing
 
-    this.x = s.width
+    this.x = WIDTH
     this.w = 80
     this.speed = 3
 
@@ -30,13 +33,9 @@ class Pipe {
     return false
   }
 
-  //this function is used to calculate scores and checks if we've went through the pipes
-  pass(bird) {
-    if (bird.x > this.x && !this.passed) {
-      this.passed = true
-      return true
-    }
-    return false
+  isPassedOnce(bird) {
+    if (this.passed) return false
+    return (this.passed = bird.x > this.x + this.w)
   }
 
   drawHalf() {
@@ -44,31 +43,27 @@ class Pipe {
     let peakRatio = pipeTopImg.height / pipeTopImg.width
     let bodyRatio = pipeBottomImg.height / pipeBottomImg.width
 
-    //this way we calculate, how many tubes we can fit without stretching
-    howManyNedeed = Math.round(this.s.height / (this.w * bodyRatio))
-    //this <= and start from 1 is just my HACK xD But it's working
+    howManyNedeed = Math.round(HEIGHT / (this.w * bodyRatio))
     for (let i = 0; i < howManyNedeed; ++i) {
       let offset = this.w * (i * bodyRatio + peakRatio)
-      this.s.image(pipeBottomImg, -this.w / 2, offset, this.w, this.w * bodyRatio)
+      image(pipeBottomImg, -this.w / 2, offset, this.w, this.w * bodyRatio)
     }
-    this.s.image(pipeTopImg, -this.w / 2, 0, this.w, this.w * peakRatio)
+    image(pipeTopImg, -this.w / 2, 0, this.w, this.w * peakRatio)
   }
 
-  show() {
-    this.s.push()
-    this.s.translate(this.x + this.w / 2, this.bottom)
+  draw() {
+    push()
+    translate(this.x + this.w / 2, this.bottom)
     this.drawHalf()
-    this.s.translate(0, -this.spacing)
-    this.s.rotate(this.s.PI)
+    translate(0, -this.spacing)
+    rotate(PI)
     this.drawHalf()
-    this.s.pop()
+    pop()
   }
 
   update() {
     this.x -= this.speed
   }
 
-  offscreen() {
-    return this.x < -this.w
-  }
+  offscreen = () => this.x < -this.w
 }

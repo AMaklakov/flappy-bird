@@ -1,16 +1,20 @@
 window.WIDTH = 288
 window.HEIGHT = 512
+PIPES_TOTAL = 1
 
-let s
+/** @type {Bird} */
 let bird
+/** @type {Pipe[]} */
+let pipes
 let score = 0
-let maxScore = 0
+let record = 0
 
 let needJump = false
 
 function setup() {
   createCanvas(WIDTH, HEIGHT)
   bird = new Bird()
+  pipes = [new Pipe()]
 }
 
 function preload() {
@@ -23,6 +27,18 @@ function draw() {
   clear()
   image(bgImg, 0, 0, bgImg.width, height) // set bg image
 
+  pipes.forEach((pipe, index) => {
+    pipe.update()
+    pipe.draw()
+
+    if (pipe.isPassedOnce(bird)) {
+      score += 1
+    }
+  })
+  pipes = pipes.filter((pipe) => !pipe.offscreen())
+  pipes = pipes.concat(Array.from({ length: PIPES_TOTAL - pipes.length }).map(() => new Pipe()))
+
+  // jump
   if (needJump) {
     bird.jump()
     needJump = false
@@ -48,28 +64,10 @@ function keyPressed() {
 
 function showScore() {
   textSize(20)
-  text('score: ' + score, 1, 32)
-  text('record: ' + maxScore, 1, 64)
+  text(`Score: ${score}`, 1, 32)
+  text(`Record: ${record}`, 1, 64)
 }
-// let bird,
-//   pipes,
-//   score = 0
-// let maxScore = 0
-// let gameoverFrame = 0
-// let isOver = false
-//
-// let touched = false
-// let prevTouched = false
-//
-// new p5((s) => {
-//   s.preload = loadSprites()
-//
-//   s.setup = () => {
-//     s.createCanvas(800, 600, 800, 600)
-//     bird = new Bird(s)
-//     // pipes = [new Pipe(s)]
-//   }
-//
+
 //   s.draw = () => {
 //     s.background(0)
 //     s.image(bgImg, 0, 0, bgImg.width, s.height) // background
