@@ -1,6 +1,7 @@
 const BIRD_SIZE = 30
 const G = 0.25
 const JUMP_A = 5
+const MIN_V = -8
 
 class Bird {
   constructor() {
@@ -14,6 +15,7 @@ class Bird {
 
   draw() {
     image(birdImg, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
+    return this
   }
 
   jump() {
@@ -22,6 +24,8 @@ class Bird {
     } else {
       this.v = -JUMP_A
     }
+    this.v = Math.max(MIN_V, this.v)
+    return this
   }
 
   update() {
@@ -37,6 +41,8 @@ class Bird {
       this.y = this.halfSize
       this.v = 0
     }
+
+    return this
   }
 
   touchesSky = () => this.y - this.halfSize <= 0

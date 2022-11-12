@@ -50,8 +50,7 @@ function draw() {
   }
   prevTouch = !!touches.length
 
-  bird.update()
-  bird.draw()
+  bird.update().draw()
 
   showScore()
 }
