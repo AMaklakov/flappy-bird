@@ -27,7 +27,7 @@ function preload() {
 function draw() {
   checkJump()
 
-  image(bgImg, 0, 0, WIDTH, HEIGHT) // set bg image
+  image(bgImg, 0, 0, WIDTH, HEIGHT)
 
   if (checkGameOver()) {
     gameover()
