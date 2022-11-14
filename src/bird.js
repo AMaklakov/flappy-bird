@@ -5,8 +5,8 @@ const MIN_V = -8
 
 class Bird {
   constructor() {
-    this.y = window.HEIGHT / 2
-    this.x = window.WIDTH / 4
+    this.y = HEIGHT / 2
+    this.x = WIDTH / 4
     this.width = this.height = BIRD_SIZE
     this.halfSize = BIRD_SIZE / 2
 
@@ -46,5 +46,5 @@ class Bird {
   }
 
   touchesSky = () => this.y - this.halfSize <= 0
-  touchesGround = () => this.y + this.halfSize >= window.HEIGHT
+  touchesGround = () => this.y + this.halfSize >= HEIGHT
 }

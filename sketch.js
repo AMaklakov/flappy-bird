@@ -1,5 +1,5 @@
-window.WIDTH = window.innerWidth
-window.HEIGHT = window.innerHeight
+const WIDTH = window.innerWidth
+const HEIGHT = window.innerHeight
 const PIPES_TOTAL = 1
 const NEW_PIPE_FRAMES = 150
 
@@ -27,8 +27,11 @@ function preload() {
 function draw() {
   checkJump()
 
-  // clear()
-  image(bgImg, 0, 0, width, height) // set bg image
+  image(bgImg, 0, 0, WIDTH, HEIGHT) // set bg image
+
+  if (checkGameOver()) {
+    gameover()
+  }
 
   pipes.forEach((pipe) => pipe.update().draw())
   score += pipes.filter((p) => p.isPassedOnce(bird)).length
@@ -36,17 +39,11 @@ function draw() {
     pipes.push(new Pipe())
   }
 
-  if (checkGameOver()) {
-    gameover()
-  }
-
-  // jump
   if (needJump) {
     bird.jump()
     needJump = false
   }
   prevTouch = !!touches.length
-
   bird.update().draw()
 
   showScore()

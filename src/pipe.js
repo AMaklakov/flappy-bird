@@ -1,9 +1,12 @@
-const { WIDTH, HEIGHT } = window
-
 const MIN_H = HEIGHT * (1 / 6)
 const MAX_H = HEIGHT * (3 / 4)
 
+const PIPE_V = 3
+const PIPE_W = 75
 const SPACING = 100
+
+let PEAK_RATIO
+let BOTTOM_RATIO
 
 class Pipe {
   constructor() {
@@ -11,45 +14,32 @@ class Pipe {
     this.bottom = this.top + SPACING
 
     this.x = WIDTH
-    this.w = 80
-    this.speed = 3
+    this.w = PIPE_W
+    this.speed = PIPE_V
 
+    PEAK_RATIO = pipeTopImg.height / pipeTopImg.width
+    BOTTOM_RATIO = pipeBottomImg.height / pipeBottomImg.width
     this.passed = false
-    this.highlight = false
   }
 
+  /** @param {Bird} bird */
   hits(bird) {
-    let halfBirdHeight = bird.height / 2
-    let halfBirdwidth = bird.width / 2
-
-    if (bird.y - halfBirdHeight < this.top || bird.y + halfBirdHeight > this.bottom) {
-      //if this.w is huge, then we need different collision model
-      if (bird.x + halfBirdwidth > this.x && bird.x - halfBirdwidth < this.x + this.w) {
-        this.highlight = true
-        this.passed = true
-        return true
-      }
-    }
-    this.highlight = false
-    return false
+    if (this.passed || bird.x + bird.halfSize < this.x) return false
+    return bird.y - bird.halfSize < this.top || bird.y + bird.halfSize > this.bottom
   }
 
   isPassedOnce(bird) {
     if (this.passed) return false
-    return (this.passed = bird.x > this.x + this.w)
+    return (this.passed = bird.x - bird.halfSize > this.x + this.w)
   }
 
   drawHalf() {
-    let howManyNedeed = 0
-    let peakRatio = pipeTopImg.height / pipeTopImg.width
-    let bodyRatio = pipeBottomImg.height / pipeBottomImg.width
-
-    howManyNedeed = Math.round(HEIGHT / (this.w * bodyRatio))
-    for (let i = 0; i < howManyNedeed; ++i) {
-      let offset = this.w * (i * bodyRatio + peakRatio)
-      image(pipeBottomImg, -this.w / 2, offset, this.w, this.w * bodyRatio)
+    const bImgCount = Math.round(HEIGHT / (this.w * BOTTOM_RATIO))
+    for (let i = 0; i < bImgCount; ++i) {
+      let offset = this.w * (i * BOTTOM_RATIO + PEAK_RATIO)
+      image(pipeBottomImg, -this.w / 2, offset, this.w, this.w * BOTTOM_RATIO)
     }
-    image(pipeTopImg, -this.w / 2, 0, this.w, this.w * peakRatio)
+    image(pipeTopImg, -this.w / 2, 0, this.w, this.w * PEAK_RATIO)
   }
 
   draw() {
