@@ -13,6 +13,7 @@ let record = +localStorage.getItem('record') || 0
 let needJump = false
 let isGameOver = false
 let gameOverFrame = 0
+let prevTouch
 
 function setup() {
   createCanvas(WIDTH, HEIGHT)
@@ -25,8 +26,6 @@ function preload() {
 }
 
 function draw() {
-  checkJump()
-
   image(bgImg, 0, 0, WIDTH, HEIGHT)
 
   if (checkGameOver()) {
@@ -39,23 +38,25 @@ function draw() {
     pipes.push(new Pipe())
   }
 
+  checkJump()
+  prevTouch = !!touches.length
   if (needJump) {
     bird.jump()
     needJump = false
   }
-  prevTouch = !!touches.length
   bird.update().draw()
 
   showScore()
 }
 
-let prevTouch
+// support touch devices
 function checkJump() {
   if (touches.length && !prevTouch) {
     needJump = true
     prevTouch = true
   }
 }
+// support keyboard
 function keyPressed() {
   needJump = true
 }
@@ -79,12 +80,6 @@ function gameover() {
   noLoop()
 }
 
-function toggleGameOver(show) {
-  const div = document.querySelector('#gameOver')
-  div.style.display = show ? 'flex' : 'none'
-  div.querySelector('.result').innerHTML = score
-}
-
 function restart() {
   isGameOver = false
   score = 0
@@ -93,6 +88,12 @@ function restart() {
   gameoverFrame = frameCount - 1
   toggleGameOver(false)
   loop()
+}
+
+function toggleGameOver(show) {
+  const div = document.querySelector('#gameOver')
+  div.style.display = show ? 'flex' : 'none'
+  div.querySelector('.result').innerHTML = score
 }
 
 function loadSprites() {
